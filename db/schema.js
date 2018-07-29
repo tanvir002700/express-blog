@@ -1,5 +1,4 @@
-const cassandra = require('cassandra-driver');
-const client = new cassandra.Client({contactPoints: ['localhost'], keyspace: 'test'});
+const client = require('./client');
 
 queries = [
     'CREATE TABLE IF NOT EXISTS users(id uuid PRIMARY KEY, name text)',

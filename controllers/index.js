@@ -6,4 +6,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.use('/posts', require('./posts_controller'));
+
 module.exports = router;

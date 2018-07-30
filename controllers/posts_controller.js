@@ -18,5 +18,12 @@ router.post('/create', function(req, res, next) {
     });
 });
 
+router.get('/:id/edit', function(req, res, next) {
+    const id = req.params.id;
+    Post.find_by_id(id, function(){}, function(post){
+        res.render('posts/edit', {post: post.rows[0]});
+    });
+});
+
 
 module.exports = router;

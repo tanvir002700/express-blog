@@ -6,5 +6,6 @@ block content
     ul
         each post in posts
             li= post.title  +" "+  post.description
+            a(href='posts/'+post.id+'/edit') edit
 
     a(href='posts/new') New post

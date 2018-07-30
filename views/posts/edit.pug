@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+    h1 Create edit post
+
+    form(method='POST' action='create')
+        label(for='title') Title:
+        input#title(type='text', name='title', value=post.title)
+        br
+        br
+        br
+
+        label(for='description') Description:
+        input#description(type='text', name='description', value=post.description)
+
+        button(type='submit') Update

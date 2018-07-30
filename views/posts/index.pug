@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    h1 Index page
+
+    ul
+        each post in posts
+            li= post.title  +" "+  post.description
+
+    a(href='posts/new') New post

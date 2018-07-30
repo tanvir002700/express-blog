@@ -3,7 +3,7 @@ extends ../layout
 block content
     h1 Create new post
 
-    form(method='POST' action='posts/create')
+    form(method='POST' action='create')
         label(for='title') Title:
         input#title(type='text', name='title')
         br
@@ -12,3 +12,5 @@ block content
 
         label(for='description') Description:
         input#description(type='text', name='description')
+
+        button(type='submit') Create

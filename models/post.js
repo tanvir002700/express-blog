@@ -4,27 +4,20 @@ const create_post_query = 'INSERT INTO posts(id, title, description) VALUES(now(
 const find_by_id_query = 'SELECT * FROM posts WHERE id=?';
 
 const dbResponseCallback = (err, res) => {
-    if(err) {
-        this.failed;
-    } else {
-        this.success(res);
-    }
+    this.callBack(err, res);
 };
 
-module.exports.all = function(params, failed, success) {
-    this.failed = failed;
-    this.success = success;
+module.exports.all = function(params, callBack) {
+    this.callBack = callBack;
     client.execute(all_posts_query, [], dbResponseCallback);
 };
 
-module.exports.create = function(params, failed, success) {
-    this.failed = failed;
-    this.success = success;
+module.exports.create = function(params, callBack) {
+    this.callBack = callBack;
     client.execute(create_post_query, [params.title, params.description], dbResponseCallback);
 };
 
-module.exports.find_by_id = function(id, failed, success) {
-    this.failed = failed;
-    this.success = success;
+module.exports.find_by_id = function(id, callBack) {
+    this.callBack = callBack;
     client.execute(find_by_id_query, [id], dbResponseCallback);
 };

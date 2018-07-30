@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+    h1 Create new post
+
+    form(method='POST' action='posts/create')
+        label(for='title') Title:
+        input#title(type='text', name='title')
+        br
+        br
+        br
+
+        label(for='description') Description:
+        input#description(type='text', name='description')

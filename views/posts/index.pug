@@ -9,5 +9,9 @@ block content
             a(href='posts/'+post.id+'/edit') edit
             |
             a(href='posts/'+post.id) Show
+            |
+            form(method='POST' action='posts/'+post.id)
+                input(type="hidden" name="_method" value="DELETE")
+                button(type='submit') Delete
 
     a(href='posts/new') New post

@@ -63,4 +63,15 @@ router.put('/:id/update', function(req, res, next) {
 });
 
 
+router.delete('/:id', function(req, res, next) {
+    const id = req.params.id;
+    Post.delete(id, function(err, result) {
+        if(err) {
+            res.redirect('/posts');
+        } else {
+            res.redirect('/posts');
+        }
+    });
+});
+
 module.exports = router;

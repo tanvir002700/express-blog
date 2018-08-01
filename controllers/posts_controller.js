@@ -27,6 +27,18 @@ router.post('/create', function(req, res, next) {
     });
 });
 
+router.get('/:id', function(req, res, next) {
+    const id = req.params.id;
+    Post.find_by_id(id, function(err, post) {
+        if(err) {
+            res.render('/');
+        } else {
+            res.render('posts/show', {post: post.rows[0]});
+        }
+    });
+});
+
+
 router.get('/:id/edit', function(req, res, next) {
     const id = req.params.id;
     Post.find_by_id(id, function(err, post) {
@@ -39,16 +51,11 @@ router.get('/:id/edit', function(req, res, next) {
 });
 
 router.put('/:id/update', function(req, res, next) {
-    console.log('came here.........');
     const id = req.params.id;
-    console.log(id);
     Post.update(id, req.body, function(err, result) {
         if(err) {
             res.render('/'+id+'/edit');
         } else {
-            console.log('success update................');
-            console.log(err);
-            console.log(result);
             res.redirect('/posts');
             return;
         }

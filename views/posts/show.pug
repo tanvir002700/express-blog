@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+
+    h1= post.title
+    p= post.description
+
+    a(href='posts/'+post.id+'/edit') edit
+
+    a(href='new') New post

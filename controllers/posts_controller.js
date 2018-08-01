@@ -7,6 +7,7 @@ router.get('/', function(req, res, next) {
         if(err) {
             res.redirect('/');
         } else {
+            console.log('Came to index posts.........');
             res.render('posts/index', {posts: posts.rows})
         }
     });
@@ -33,6 +34,23 @@ router.get('/:id/edit', function(req, res, next) {
             res.render('/'+id+'/edit');
         } else {
             res.render('posts/edit', {post: post.rows[0]});
+        }
+    });
+});
+
+router.put('/:id/update', function(req, res, next) {
+    console.log('came here.........');
+    const id = req.params.id;
+    console.log(id);
+    Post.update(id, req.body, function(err, result) {
+        if(err) {
+            res.render('/'+id+'/edit');
+        } else {
+            console.log('success update................');
+            console.log(err);
+            console.log(result);
+            res.redirect('/posts');
+            return;
         }
     });
 });

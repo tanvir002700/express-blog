@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var methodOverride = require('method-override');
+var csrf = require('csurf');
 var logger = require('morgan');
 
 var indexRouter = require('./controllers/index');
@@ -25,7 +26,8 @@ app.use(methodOverride(function (req, res) {
     delete req.body._method
     return method
   }
-}))
+}));
+app.use(csrf({ cookie: true }))
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(require('./controllers'));

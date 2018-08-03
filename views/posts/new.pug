@@ -4,6 +4,7 @@ block content
     h1 Create new post
 
     form(method='POST' action='create')
+        input(type='hidden', name='_csrf', value=csrfToken)
         label(for='title') Title:
         input#title(type='text', name='title')
         br

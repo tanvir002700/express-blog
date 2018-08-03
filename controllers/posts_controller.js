@@ -7,14 +7,13 @@ router.get('/', function(req, res, next) {
         if(err) {
             res.redirect('/');
         } else {
-            console.log('Came to index posts.........');
-            res.render('posts/index', {posts: posts.rows})
+            res.render('posts/index', {posts: posts.rows, csrfToken: req.csrfToken()})
         }
     });
 });
 
 router.get('/new', function(req, res, next) {
-    res.render('posts/new');
+    res.render('posts/new', { csrfToken: req.csrfToken() });
 });
 
 router.post('/create', function(req, res, next) {
@@ -45,7 +44,7 @@ router.get('/:id/edit', function(req, res, next) {
         if(err) {
             res.render('/'+id+'/edit');
         } else {
-            res.render('posts/edit', {post: post.rows[0]});
+            res.render('posts/edit', {post: post.rows[0], csrfToken: req.csrfToken()});
         }
     });
 });

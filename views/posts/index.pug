@@ -11,6 +11,7 @@ block content
             a(href='posts/'+post.id) Show
             |
             form(method='POST' action='posts/'+post.id)
+                input(type='hidden', name='_csrf', value=csrfToken)
                 input(type="hidden" name="_method" value="DELETE")
                 button(type='submit') Delete
 

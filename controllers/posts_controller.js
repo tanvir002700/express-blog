@@ -1,6 +1,12 @@
 const express = require('express');
+const { check, validationResult } = require('express-validator/check');
 const router = express.Router();
 const Post = require('../models/post');
+
+const validations = [
+    check('title').not().isEmpty(),
+    check('description').not().isEmpty()
+];
 
 router.get('/', function(req, res, next) {
     Post.all(null, function(err, posts) {
@@ -16,14 +22,21 @@ router.get('/new', function(req, res, next) {
     res.render('posts/new', { csrfToken: req.csrfToken() });
 });
 
-router.post('/create', function(req, res, next) {
-    Post.create(req.body, function(err, result) {
-        if(err) {
-            res.render('/new');
-        } else {
-            res.redirect('/posts');
-        }
-    });
+router.post('/create', validations, function(req, res, next) {
+    var errors = validationResult(req);
+
+    console.log(errors.array());
+    if(!errors.isEmpty()) {
+        res.render('posts/new', { csrfToken: req.csrfToken(), errors: errors.array() });
+    } else {
+        Post.create(req.body, function(err, result) {
+            if(err) {
+                res.render('posts/new', { csrfToken: req.csrfToken() });
+            } else {
+                res.redirect('/posts');
+            }
+        });
+    }
 });
 
 router.get('/:id', function(req, res, next) {

@@ -3,11 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var methodOverride = require('method-override');
+var expressValidator = require('express-validator');
 var csrf = require('csurf');
 var logger = require('morgan');
-
-var indexRouter = require('./controllers/index');
-var usersRouter = require('./controllers/users');
 
 var app = express();
 
@@ -19,6 +17,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// request override
 app.use(methodOverride(function (req, res) {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
     // look in urlencoded POST bodies and delete it

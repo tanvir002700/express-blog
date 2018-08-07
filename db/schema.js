@@ -6,5 +6,8 @@ queries = [
 ];
 
 queries.forEach(function(query) {
-    client.execute(query, [], function(err, res){console.log(err, res);});
+    client.execute(query, [], function(err, res) {
+        console.log("Run query.........");
+        console.log(query);
+    });
 });

@@ -62,9 +62,17 @@ router.get('/:id/edit', function(req, res, next) {
 });
 
 router.put('/:id/update', validations, function(req, res, next) {
+    var errors = validationResult(req);
+
     const id = req.params.id;
     if(!errors.isEmpty()) {
-        res.render('posts/edit', {post: post.rows[0], csrfToken: req.csrfToken()});
+        Post.find_by_id(id, function(err, post) {
+            if(err) {
+                res.render('/'+id+'/edit');
+            } else {
+                res.render('posts/edit', {post: post.rows[0], csrfToken: req.csrfToken(), errors: errors.array()});
+            }
+        });
     } else {
         Post.update(id, req.body, function(err, result) {
             if(err) {

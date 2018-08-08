@@ -25,7 +25,6 @@ router.get('/new', function(req, res, next) {
 router.post('/create', validations, function(req, res, next) {
     var errors = validationResult(req);
 
-    console.log(errors.array());
     if(!errors.isEmpty()) {
         res.render('posts/new', { csrfToken: req.csrfToken(), errors: errors.array() });
     } else {
@@ -62,16 +61,20 @@ router.get('/:id/edit', function(req, res, next) {
     });
 });
 
-router.put('/:id/update', function(req, res, next) {
+router.put('/:id/update', validations, function(req, res, next) {
     const id = req.params.id;
-    Post.update(id, req.body, function(err, result) {
-        if(err) {
-            res.render('/'+id+'/edit');
-        } else {
-            res.redirect('/posts');
-            return;
-        }
-    });
+    if(!errors.isEmpty()) {
+        res.render('posts/edit', {post: post.rows[0], csrfToken: req.csrfToken()});
+    } else {
+        Post.update(id, req.body, function(err, result) {
+            if(err) {
+                res.render('/'+id+'/edit');
+            } else {
+                res.redirect('/posts');
+                return;
+            }
+        });
+    }
 });
 
 

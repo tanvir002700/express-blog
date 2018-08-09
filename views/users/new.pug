@@ -2,3 +2,22 @@ extends ../layout
 
 block content
     h1 Register new user
+
+    if errors
+        each error in errors
+            p= error.msg
+
+    form(method='POST' action='create')
+        input(type='hidden', name='_csrf', value=csrfToken)
+        label(for='name') Name:
+        input#title(type='text', name='name')
+        br
+        br
+        br
+        label(for='password') Password:
+        input#description(type='text', name='password')
+        br
+        label(for='password_confirmation') Password:
+        input#description(type='text', name='password_confirmation')
+
+        button(type='submit') Create

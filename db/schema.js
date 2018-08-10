@@ -1,7 +1,7 @@
 const client = require('./client');
 
 queries = [
-    'CREATE TABLE IF NOT EXISTS users(id uuid PRIMARY KEY, name text, password text)',
+    'CREATE TABLE IF NOT EXISTS users(id uuid, email text, name text, password text, PRIMARY KEY(id, email))',
     'CREATE TABLE IF NOT EXISTS posts(id uuid PRIMARY KEY, title text, description text)'
 ];
 

@@ -7,9 +7,15 @@ router.get('/new', function(req, res, next) {
 });
 
 router.post('/create', function(req, res, next) {
-    console.log('create user');
-    User.create(req.body, function(err, result) {
-        res.redirect('/');
+
+    User.find_by_email(req.body, function(err, result) {
+        if(result.rows.length || err) {
+            res.redirect('/');
+        } else {
+            User.create(req.body, function(err, result) {
+                res.redirect('/');
+            });
+        }
     });
 });
 

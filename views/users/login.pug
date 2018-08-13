@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+    h1 Login
+
+    if errors
+        each error in errors
+            p= error.msg
+
+    form(method='POST' action='create')
+        input(type='hidden', name='_csrf', value=csrfToken)
+        label(for='name') Email:
+        input#title(type='text', name='email')
+        br
+        label(for='password') Password:
+        input#description(type='password', name='password')
+
+        button(type='submit') Login

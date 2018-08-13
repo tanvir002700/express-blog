@@ -20,7 +20,7 @@ router.post('/create', function(req, res, next) {
 });
 
 router.get('/login', function(req, res, next) {
-    res.render('users/new', { csrfToken: req.csrfToken() });
+    res.render('users/login', { csrfToken: req.csrfToken() });
 });
 
 module.exports = router;

@@ -2,7 +2,7 @@ const client = require('../db/client');
 var bcrypt = require('bcryptjs');
 
 const CREATE_USER_QUERY = 'INSERT INTO users(id, email, name, password) VALUES (now(), ?, ?, ?)';
-const FIND_USER_BY_EMAIL_QUERY = 'SELECT id FROM users WHERE email=? LIMIT 1 ALLOW FILTERING';
+const FIND_USER_BY_EMAIL_QUERY = 'SELECT * FROM users WHERE email=? LIMIT 1 ALLOW FILTERING';
 
 const dbResponseCallback = (err, res) => {
     this.callBack(err, res);
@@ -20,4 +20,11 @@ module.exports.create = function(params, callBack) {
 module.exports.find_by_email = function(params, callBack) {
     this.callBack = callBack;
     client.execute(FIND_USER_BY_EMAIL_QUERY, [params.email], dbResponseCallback);
+}
+
+module.exports.compare_password = function(candidate_password, hash, callback) {
+	bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
+    	if(err) throw err;
+    	callback(null, isMatch);
+	});
 }

@@ -32,6 +32,7 @@ passport.use(new LocalStrategy(function(email, password, done) {
             return done(null, false, { message: 'Unknown User' });
         }
         user = result.rows[0];
+        console.log(user);
         User.compare_password(password, user.password, function(err, isMatch) {
             if(err) throw err;
             if(isMatch) {

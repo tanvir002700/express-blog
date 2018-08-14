@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var methodOverride = require('method-override');
 var flash = require('connect-flash');
+var session = require('express-session');
+var passport = require('passport');
 var csrf = require('csurf');
 var logger = require('morgan');
 
@@ -28,12 +30,24 @@ app.use(methodOverride(function (req, res) {
     return method
   }
 }));
+
+
 app.use(csrf({ cookie: true }))
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(require('./controllers'));
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
+
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session())
 
 app.use(flash());
+app.use(require('./controllers'));
+
 
 app.use(function (req, res, next) {
   res.locals.success_msg = req.flash('success_msg');
@@ -42,6 +56,7 @@ app.use(function (req, res, next) {
   res.locals.user = req.user || null;
   next();
 });
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

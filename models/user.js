@@ -1,7 +1,7 @@
 const client = require('../db/client');
 var bcrypt = require('bcryptjs');
 
-const CREATE_USER_QUERY = 'INSERT INTO users(id, email, name, password) VALUES (now(), ?, ?, ?)';
+const CREATE_USER_QUERY = 'INSERT INTO users(id, email, username, password) VALUES(now(), ?, ?, ?)';
 
 const FIND_USER_BY_EMAIL_QUERY = 'SELECT * FROM users WHERE email=? LIMIT 1 ALLOW FILTERING';
 
@@ -15,10 +15,11 @@ const dbResponseCallback = (err, res) => {
 
 
 module.exports.create = function(params, callBack) {
+    console.log('params ', params);
     this.callBack = callBack;
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(params.password, salt);
-    client.execute(CREATE_USER_QUERY, [params.email, params.name, hash], dbResponseCallback);
+    client.execute(CREATE_USER_QUERY, [params.email, params.username, hash], dbResponseCallback);
 };
 
 
@@ -33,12 +34,13 @@ module.exports.find_by_id = function(id, callBack) {
 }
 
 module.exports.find_by_username = function(username, callBack) {
+    console.log('model username: ', username);
     this.callBack = callBack;
-    client.execute(FIND_USER_BY_ID_QUERY, [username], dbResponseCallback);
+    client.execute(FIND_USER_BY_USERNAME_QUERY, [username], dbResponseCallback);
 }
 
 module.exports.compare_password = function(candidate_password, hash, callback) {
-	bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
+	bcrypt.compare(candidate_password, hash, function(err, isMatch) {
     	if(err) throw err;
     	callback(null, isMatch);
 	});

@@ -9,6 +9,7 @@ const validations = [
 ];
 
 router.get('/', function(req, res, next) {
+    console.log(req.user);
     Post.all(null, function(err, posts) {
         if(err) {
             res.redirect('/');

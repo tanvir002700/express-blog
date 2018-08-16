@@ -14,9 +14,13 @@ router.post('/create', function(req, res, next) {
         if(result.rows.length || err) {
             res.redirect('/');
         } else {
-            User.create(req.body, function(err, result) {
-                res.redirect('/');
-            });
+            if(req.body.password === req.body.password_confirmation) {
+                User.create(req.body, function(err, result) {
+                    res.redirect('/');
+                });
+            } else {
+                res.render('users/new', { csrfToken: req.csrfToken() });
+            }
         }
     });
 });

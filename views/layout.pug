@@ -4,4 +4,8 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    != messages('message', locals)
+    if errors
+        each error, i in errors
+            div(class="alert alert-danger") #{error.msg}
     block content

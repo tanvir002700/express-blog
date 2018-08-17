@@ -32,7 +32,7 @@ router.get('/login', function(req, res, next) {
 passport.use(new LocalStrategy(function(username, password, done) {
     User.find_by_username(username, function(err, result) {
         if(err) throw err;
-        if(!result.rows.legth == 0) {
+        if(!result.rows.length) {
             return done(null, false, { message: 'Unknown User' });
         }
         user = result.rows[0];

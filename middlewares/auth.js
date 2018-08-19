@@ -3,13 +3,13 @@ var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/user');
 
 passport.use(new LocalStrategy(function(username, password, done) {
-    User.find_by_username(username, function(err, result) {
+    User.findByUsername(username, function(err, result) {
         if(err) throw err;
         if(!result.rows.length) {
             return done(null, false, { message: 'Unknown User' });
         }
         user = result.rows[0];
-        User.compare_password(password, user.password, function(err, isMatch) {
+        User.comparePassword(password, user.password, function(err, isMatch) {
             if(err) throw err;
             if(isMatch) {
                 return done(null, user);
@@ -25,7 +25,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-    User.find_by_id(id, function(err, result) {
+    User.findById(id, function(err, result) {
         done(err, result.rows[0]);
     });
 });

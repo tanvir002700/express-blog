@@ -23,25 +23,25 @@ module.exports.create = function(params, callBack) {
 };
 
 
-module.exports.find_by_email = function(email, callBack) {
+module.exports.findByEmail = function(email, callBack) {
     this.callBack = callBack;
     client.execute(FIND_USER_BY_EMAIL_QUERY, [email], dbResponseCallback);
-}
+};
 
-module.exports.find_by_id = function(id, callBack) {
+module.exports.findById = function(id, callBack) {
     this.callBack = callBack;
     client.execute(FIND_USER_BY_ID_QUERY, [id], dbResponseCallback);
-}
+};
 
-module.exports.find_by_username = function(username, callBack) {
+module.exports.findByUsername = function(username, callBack) {
     console.log('model username: ', username);
     this.callBack = callBack;
     client.execute(FIND_USER_BY_USERNAME_QUERY, [username], dbResponseCallback);
-}
+};
 
-module.exports.compare_password = function(candidate_password, hash, callback) {
-	bcrypt.compare(candidate_password, hash, function(err, isMatch) {
+module.exports.comparePassword = function(candidatePassword, hash, callback) {
+	bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
     	if(err) throw err;
     	callback(null, isMatch);
 	});
-}
+};

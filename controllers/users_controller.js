@@ -12,13 +12,17 @@ router.post('/create', function(req, res, next) {
 
     User.find_by_email(req.body.email, function(err, result) {
         if(result.rows.length || err) {
+            req.flash('error', 'User already exist.');
             res.redirect('/');
         } else {
+            console.log(req.body.password);
+            console.log(req.body.password_confirmation);
             if(req.body.password === req.body.password_confirmation) {
                 User.create(req.body, function(err, result) {
                     res.redirect('/');
                 });
             } else {
+                req.flash('error', 'Password not Match.');
                 res.render('users/new', { csrfToken: req.csrfToken() });
             }
         }

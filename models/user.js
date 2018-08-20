@@ -1,47 +1,30 @@
 const client = require('../db/client');
+const Query = require('../db/query');
 var bcrypt = require('bcryptjs');
-
-const CREATE_USER_QUERY = 'INSERT INTO users(id, email, username, password) VALUES(now(), ?, ?, ?)';
-
-const FIND_USER_BY_EMAIL_QUERY = 'SELECT * FROM users WHERE email=? LIMIT 1 ALLOW FILTERING';
-
-const FIND_USER_BY_USERNAME_QUERY = 'SELECT * FROM users WHERE username=? LIMIT 1 ALLOW FILTERING';
-
-const FIND_USER_BY_ID_QUERY = 'SELECT * FROM users WHERE id=? LIMIT 1 ALLOW FILTERING';
-
-const dbResponseCallback = (err, res) => {
-    this.callBack(err, res);
-};
 
 
 module.exports.create = function(params, callBack) {
-    console.log('params ', params);
-    this.callBack = callBack;
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(params.password, salt);
-    client.execute(CREATE_USER_QUERY, [params.email, params.username, hash], dbResponseCallback);
+    client.execute(Query.User.CREATE, [params.email, params.username, hash], callBack);
 };
 
 
 module.exports.findByEmail = function(email, callBack) {
-    this.callBack = callBack;
-    client.execute(FIND_USER_BY_EMAIL_QUERY, [email], dbResponseCallback);
+    client.execute(Query.User.FIND_BY_EMAIL, [email], callBack);
 };
 
 module.exports.findById = function(id, callBack) {
-    this.callBack = callBack;
-    client.execute(FIND_USER_BY_ID_QUERY, [id], dbResponseCallback);
+    client.execute(Query.User.FIND_BY_ID, [id], callBack);
 };
 
 module.exports.findByUsername = function(username, callBack) {
-    console.log('model username: ', username);
-    this.callBack = callBack;
-    client.execute(FIND_USER_BY_USERNAME_QUERY, [username], dbResponseCallback);
+    client.execute(Query.User.FIND_BY_USERNAME, [username], callBack);
 };
 
-module.exports.comparePassword = function(candidatePassword, hash, callback) {
+module.exports.comparePassword = function(candidatePassword, hash, callBack) {
 	bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
     	if(err) throw err;
-    	callback(null, isMatch);
+    	callBack(null, isMatch);
 	});
 };

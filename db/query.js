@@ -6,3 +6,9 @@ module.exports.Post = {
         DELETE: 'DELETE FROM posts WHERE id=?'
 };
 
+module.exports.User = {
+    CREATE: 'INSERT INTO users(id, email, username, password) VALUES(now(), ?, ?, ?)',
+    FIND_BY_EMAIL: 'SELECT * FROM users WHERE email=? LIMIT 1 ALLOW FILTERING',
+    FIND_BY_USERNAME: 'SELECT * FROM users WHERE username=? LIMIT 1 ALLOW FILTERING',
+    FIND_BY_ID: 'SELECT * FROM users WHERE id=? LIMIT 1 ALLOW FILTERING'
+};

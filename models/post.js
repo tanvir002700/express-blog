@@ -20,7 +20,7 @@ module.exports.create = function(params, callBack) {
     client.execute(CREATE_POST_QUERY, [params.title, params.description], dbResponseCallback);
 };
 
-module.exports.find_by_id = function(id, callBack) {
+module.exports.findById = function(id, callBack) {
     this.callBack = callBack;
     client.execute(FIND_BY_ID_QUERY, [id], dbResponseCallback);
 };

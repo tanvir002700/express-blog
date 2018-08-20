@@ -43,7 +43,7 @@ router.post('/create', validations, function(req, res, next) {
 
 router.get('/:id', function(req, res, next) {
     const id = req.params.id;
-    Post.find_by_id(id, function(err, post) {
+    Post.findById(id, function(err, post) {
         if(err) {
             res.render('/');
         } else {
@@ -55,7 +55,7 @@ router.get('/:id', function(req, res, next) {
 
 router.get('/:id/edit', function(req, res, next) {
     const id = req.params.id;
-    Post.find_by_id(id, function(err, post) {
+    Post.findById(id, function(err, post) {
         if(err) {
             res.render('/'+id+'/edit');
         } else {
@@ -69,7 +69,7 @@ router.put('/:id/update', validations, function(req, res, next) {
 
     const id = req.params.id;
     if(!errors.isEmpty()) {
-        Post.find_by_id(id, function(err, post) {
+        Post.findById(id, function(err, post) {
             if(err) {
                 res.render('/'+id+'/edit');
             } else {

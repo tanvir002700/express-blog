@@ -2,22 +2,27 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/user');
 
+const passwordMatchingCallback = function(err, isMatch) {
+    if(err) throw err;
+    if(isMatch) {
+        return this.done(null, user);
+    } else {
+        return this.done(null, false, { message: 'Invalid Password' });
+    }
+}
+const handleAuthenticationCallback = function(err, result) {
+    if(err) throw err;
+    if(!result.rows.length) {
+        return done(null, false, { message: 'Unknown User' });
+    }
+    user = result.rows[0];
+    User.comparePassword(this.password, user.password, passwordMatchingCallback.bind(this));
+};
+
 passport.use(new LocalStrategy(function(username, password, done) {
-    User.findByUsername(username, function(err, result) {
-        if(err) throw err;
-        if(!result.rows.length) {
-            return done(null, false, { message: 'Unknown User' });
-        }
-        user = result.rows[0];
-        User.comparePassword(password, user.password, function(err, isMatch) {
-            if(err) throw err;
-            if(isMatch) {
-                return done(null, user);
-            } else {
-                return done(null, false, { message: 'Invalid Password' });
-            }
-        });
-    });
+    this.password = password;
+    this.done = done;
+    User.findByUsername(username, handleAuthenticationCallback.bind(this));
 }));
 
 passport.serializeUser(function(user, done) {

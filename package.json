@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "migrate": "node db/schema"
+    "migrate": "node db/schema",
+    "lint": "./node_modules/.bin/eslint ."
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

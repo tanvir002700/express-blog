@@ -7,23 +7,30 @@ router.get('/new', function(req, res, next) {
     res.render('users/new', { csrfToken: req.csrfToken() });
 });
 
-router.post('/create', function(req, res, next) {
+const checkDuplicateUser = function(req, res, next) {
+  User.findByEmail(req.body.email, function(err, result) {
+    if(result.rows.length || err) {
+      req.flash('error', 'User already exist.');
+      res.redirect('/');
+    } else {
+      next();
+    }
+  });
+};
 
-    User.findByEmail(req.body.email, function(err, result) {
-        if(result.rows.length || err) {
-            req.flash('error', 'User already exist.');
-            res.redirect('/');
-        } else {
-            if(req.body.password === req.body.password_confirmation) {
-                User.create(req.body, function(err, result) {
-                    res.redirect('/');
-                });
-            } else {
-                req.flash('error', 'Password not Match.');
-                res.render('users/new', { csrfToken: req.csrfToken() });
-            }
-        }
-    });
+const checkPasswordConfirmation = function(req, res, next) {
+  if(req.body.password === req.body.password_confirmation) {
+    next();
+  } else {
+    req.flash('error', 'Password not Match.');
+    res.render('users/new', { csrfToken: req.csrfToken() });
+  }
+};
+
+router.post('/create', checkDuplicateUser, checkPasswordConfirmation, function(req, res, next) {
+  User.create(req.body, function(err, result) {
+      res.redirect('/');
+  });
 });
 
 router.get('/login', function(req, res, next) {

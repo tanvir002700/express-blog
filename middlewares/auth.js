@@ -14,9 +14,7 @@ const passwordMatchingCallback = function(err, isMatch) {
 
 const authenticationCallback = function(err, result) {
     if(err) throw err;
-    console.log(result.rows.length);
     if(!result.rows.length) {
-        console.log('enter');
         return this.done(null, false, { message: 'Unknown User' });
     }
     user = result.rows[0];

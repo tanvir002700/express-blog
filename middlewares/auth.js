@@ -10,19 +10,19 @@ const passwordMatchingCallback = function(err, isMatch) {
         return this.done(null, false, { message: 'Invalid Password' });
     }
 }
-const handleAuthenticationCallback = function(err, result) {
+const authenticationCallback = function(err, result) {
     if(err) throw err;
     if(!result.rows.length) {
         return done(null, false, { message: 'Unknown User' });
     }
     user = result.rows[0];
-    User.comparePassword(this.password, user.password, passwordMatchingCallback.bind(this));
+    User.comparePassword(this.password,user.password, passwordMatchingCallback.bind(this));
 };
 
 passport.use(new LocalStrategy(function(username, password, done) {
     this.password = password;
     this.done = done;
-    User.findByUsername(username, handleAuthenticationCallback.bind(this));
+    User.findByUsername(username, authenticationCallback.bind(this));
 }));
 
 passport.serializeUser(function(user, done) {

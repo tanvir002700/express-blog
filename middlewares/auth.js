@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/user');
@@ -10,13 +11,16 @@ const passwordMatchingCallback = function(err, isMatch) {
         return this.done(null, false, { message: 'Invalid Password' });
     }
 }
+
 const authenticationCallback = function(err, result) {
     if(err) throw err;
+    console.log(result.rows.length);
     if(!result.rows.length) {
-        return done(null, false, { message: 'Unknown User' });
+        console.log('enter');
+        return this.done(null, false, { message: 'Unknown User' });
     }
     user = result.rows[0];
-    User.comparePassword(this.password,user.password, passwordMatchingCallback.bind(this));
+    bcrypt.compare(this.password, user.password, passwordMatchingCallback.bind(this));
 };
 
 passport.use(new LocalStrategy(function(username, password, done) {

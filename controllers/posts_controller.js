@@ -3,15 +3,10 @@ var passport = require('passport');
 const { check, validationResult } = require('express-validator/check');
 const router = express.Router();
 const Post = require('../models/post');
+const { validations } = require('../validations/post');
 
-const validations = [
-    check('title').not().isEmpty(),
-    check('description').not().isEmpty()
-];
 
 router.get('/', function(req, res, next) {
-    console.log(req.user);
-    console.log(req.isAuthenticated());
     Post.all(null, function(err, posts) {
         if(err) {
             res.redirect('/');

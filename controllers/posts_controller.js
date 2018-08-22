@@ -20,20 +20,23 @@ router.get('/new', function(req, res, next) {
     res.render('posts/new', { csrfToken: req.csrfToken() });
 });
 
-router.post('/create', validations, function(req, res, next) {
+const validationCheck = function(req, res, next) {
     var errors = validationResult(req);
-
     if(!errors.isEmpty()) {
-        res.render('posts/new', { csrfToken: req.csrfToken(), errors: errors.array() });
+      res.render('posts/new', { csrfToken: req.csrfToken(), errors: errors.array() });
     } else {
-        Post.create(req.body, function(err, result) {
-            if(err) {
-                res.render('posts/new', { csrfToken: req.csrfToken() });
-            } else {
-                res.redirect('/posts');
-            }
-        });
+      next();
     }
+}
+
+router.post('/create', validations, validationCheck, function(req, res, next) {
+    Post.create(req.body, function(err, result) {
+        if(err) {
+            res.render('posts/new', { csrfToken: req.csrfToken() });
+        } else {
+            res.redirect('/posts');
+        }
+    });
 });
 
 router.get('/:id', function(req, res, next) {

@@ -4,6 +4,7 @@ const { check, validationResult } = require('express-validator/check');
 const router = express.Router();
 const Post = require('../models/post');
 const { validations } = require('../validations/post');
+const { validationCheckForCreate, validationCheckForUpdate } = require('../middlewares/post');
 
 
 router.get('/', function(req, res, next) {
@@ -19,15 +20,6 @@ router.get('/', function(req, res, next) {
 router.get('/new', function(req, res, next) {
     res.render('posts/new', { csrfToken: req.csrfToken() });
 });
-
-const validationCheckForCreate = function(req, res, next) {
-    var errors = validationResult(req);
-    if(!errors.isEmpty()) {
-      res.render('posts/new', { csrfToken: req.csrfToken(), errors: errors.array() });
-    } else {
-      next();
-    }
-};
 
 router.post('/create', validations, validationCheckForCreate, function(req, res, next) {
     Post.create(req.body, function(err, result) {
@@ -60,22 +52,6 @@ router.get('/:id/edit', function(req, res, next) {
         }
     });
 });
-
-const validationCheckForUpdate = function(req, res, next) {
-    var errors = validationResult(req);
-    const id = req.params.id;
-    if(!errors.isEmpty()) {
-        Post.findById(id, function(err, post) {
-            if(err) {
-                res.render('/'+id+'/edit');
-            } else {
-                res.render('posts/edit', {post: post.rows[0], csrfToken: req.csrfToken(), errors: errors.array()});
-            }
-        });
-    } else {
-      next();
-    }
-};
 
 router.put('/:id/update', validations, validationCheckForUpdate, function(req, res, next) {
     const id = req.params.id;

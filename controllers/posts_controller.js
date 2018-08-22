@@ -20,16 +20,16 @@ router.get('/new', function(req, res, next) {
     res.render('posts/new', { csrfToken: req.csrfToken() });
 });
 
-const validationCheck = function(req, res, next) {
+const validationCheckForCreate = function(req, res, next) {
     var errors = validationResult(req);
     if(!errors.isEmpty()) {
       res.render('posts/new', { csrfToken: req.csrfToken(), errors: errors.array() });
     } else {
       next();
     }
-}
+};
 
-router.post('/create', validations, validationCheck, function(req, res, next) {
+router.post('/create', validations, validationCheckForCreate, function(req, res, next) {
     Post.create(req.body, function(err, result) {
         if(err) {
             res.render('posts/new', { csrfToken: req.csrfToken() });
@@ -50,7 +50,6 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-
 router.get('/:id/edit', function(req, res, next) {
     const id = req.params.id;
     Post.findById(id, function(err, post) {
@@ -62,9 +61,8 @@ router.get('/:id/edit', function(req, res, next) {
     });
 });
 
-router.put('/:id/update', validations, function(req, res, next) {
+const validationCheckForUpdate = function(req, res, next) {
     var errors = validationResult(req);
-
     const id = req.params.id;
     if(!errors.isEmpty()) {
         Post.findById(id, function(err, post) {
@@ -75,15 +73,20 @@ router.put('/:id/update', validations, function(req, res, next) {
             }
         });
     } else {
-        Post.update(id, req.body, function(err, result) {
-            if(err) {
-                res.render('/'+id+'/edit');
-            } else {
-                res.redirect('/posts');
-                return;
-            }
-        });
+      next();
     }
+};
+
+router.put('/:id/update', validations, validationCheckForUpdate, function(req, res, next) {
+    const id = req.params.id;
+    Post.update(id, req.body, function(err, result) {
+        if(err) {
+            res.render('/'+id+'/edit');
+        } else {
+            res.redirect('/posts');
+            return;
+        }
+    });
 });
 
 

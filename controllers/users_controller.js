@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var auth = require('../middlewares/auth');
+const { registrationValidations } = require('../validations/user');
+const { validationCheckForRegistration } = require('../middlewares/user');
 
 router.get('/new', function(req, res, next) {
     res.render('users/new', { csrfToken: req.csrfToken() });
@@ -38,7 +40,7 @@ const checkPasswordConfirmation = function(req, res, next) {
   }
 };
 
-router.post('/create', checkDuplicateUserByEmail, checkDuplicateUserByUserName, checkPasswordConfirmation, function(req, res, next) {
+router.post('/create', registrationValidations, validationCheckForRegistration, checkDuplicateUserByEmail, checkDuplicateUserByUserName, checkPasswordConfirmation, function(req, res, next) {
   User.create(req.body, function(err, result) {
       res.redirect('/');
   });

@@ -1,3 +1,4 @@
+const User = require('../models/user');
 const { validationResult } = require('express-validator/check');
 
 module.exports.validationCheckForRegistration = function(req, res, next) {
@@ -9,7 +10,7 @@ module.exports.validationCheckForRegistration = function(req, res, next) {
     }
 };
 
-const checkDuplicateUserByEmail = function(req, res, next) {
+module.exports.checkDuplicateUserByEmail = function(req, res, next) {
   User.findByEmail(req.body.email, function(err, result) {
     if(result.rows.length || err) {
       req.flash('error', 'User already exist with this email.');
@@ -20,7 +21,7 @@ const checkDuplicateUserByEmail = function(req, res, next) {
   });
 };
 
-const checkDuplicateUserByUserName = function(req, res, next) {
+module.exports.checkDuplicateUserByUserName = function(req, res, next) {
   User.findByUsername(req.body.username, function(err, result) {
     if(result.rows.length || err) {
       req.flash('error', 'User already exist with this username.');
@@ -31,7 +32,7 @@ const checkDuplicateUserByUserName = function(req, res, next) {
   });
 };
 
-const checkPasswordConfirmation = function(req, res, next) {
+module.exports.checkPasswordConfirmation = function(req, res, next) {
   if(req.body.password === req.body.password_confirmation) {
     next();
   } else {

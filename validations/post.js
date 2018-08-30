@@ -4,5 +4,7 @@ module.exports.validations = [
   check('title').not()
   .isEmpty().
   withMessage('Title should not be empty.'),
-    check('description').not().isEmpty()
+  check('description').not()
+  .isEmpty()
+  .withMessage('Description should not be empty.'),
 ];

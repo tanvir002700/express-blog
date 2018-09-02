@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var auth = require('../middlewares/auth');
+var test_helper = require('../helpers/test_helper');
 
 /* GET home page. */
 router.get('/', auth.isLoggedIn, function(req, res, next) {
+  test_helper.allTablesName();
   res.render('index', { title: 'Express' });
 });
 

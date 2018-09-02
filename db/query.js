@@ -1,3 +1,6 @@
+module.exports.Cassandra = {
+  ALL_TABLES: 'SELECT table_name FROM system_schema.tables WHERE keyspace_name=?'
+}
 module.exports.Post = {
         ALL: 'SELECT * FROM posts',
         CREATE: 'INSERT INTO posts(id, title, description) VALUES(now(), ?, ?)',

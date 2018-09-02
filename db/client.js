@@ -1,2 +1,5 @@
 const cassandra = require('cassandra-driver');
-module.exports = new cassandra.Client({contactPoints: ['localhost'], keyspace: 'test'});
+const db_config = require('../config').database;
+
+console.log('CONFIG ', db_config);
+module.exports = new cassandra.Client({contactPoints: db_config.contactPoints, keyspace: db_config.keyspace});

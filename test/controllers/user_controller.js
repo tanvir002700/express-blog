@@ -1,6 +1,10 @@
 var request = require('supertest');
 var app = require('../../app');
 
+beforeEach(function() {
+  console.log("call back....");
+});
+
 describe("Signup page", function() {
   it("render Signup page", function(done) {
     request(app).get('/users/new')

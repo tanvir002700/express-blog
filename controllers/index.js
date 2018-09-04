@@ -5,6 +5,7 @@ var test_helper = require('../helpers/test_helper');
 
 /* GET home page. */
 router.get('/', auth.isLoggedIn, function(req, res, next) {
+  console.log(process.env.NODE_ENV);
   res.render('index', { title: 'Express' });
 });
 

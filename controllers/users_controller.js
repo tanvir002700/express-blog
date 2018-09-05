@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../models/user');
-var auth = require('../middlewares/auth');
+const express = require('express');
+const router = express.Router();
+const User = require('../models/user');
+const auth = require('../middlewares/auth');
 const { registrationValidations } = require('../validations/user');
 const {
   validationCheckForRegistration,
@@ -15,7 +15,13 @@ router.get('/new', function(req, res, next) {
 });
 
 
-router.post('/create', registrationValidations, validationCheckForRegistration, checkDuplicateUserByEmail, checkDuplicateUserByUserName, checkPasswordConfirmation, function(req, res, next) {
+router.post('/create',
+  registrationValidations,
+  validationCheckForRegistration,
+  checkDuplicateUserByEmail,
+  checkDuplicateUserByUserName,
+  checkPasswordConfirmation,
+  function(req, res, next) {
   User.create(req.body, function(err, result) {
       res.redirect('/');
   });

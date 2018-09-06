@@ -21,3 +21,12 @@ describe('Signup page', () => {
       .end(done);
   });
 });
+
+
+describe('Login page', () => {
+  it('render Login page', (done) => {
+    request(app).get('/users/login')
+      .expect(200)
+      .end(done);
+  });
+});

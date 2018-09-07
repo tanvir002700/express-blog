@@ -5,7 +5,7 @@ beforeEach(() => {
   console.log('call back....');
 });
 
-function hasPreviousAndNextKeys(res) {
+function hasSignUpElement(res) {
   if (!res.text.includes('Email')) throw new Error('missing Email');
   if (!res.text.includes('Username')) throw new Error('missing Username');
   if (!res.text.includes('Password')) throw new Error('missing Password');
@@ -17,7 +17,7 @@ describe('Signup page', () => {
     request(app).get('/users/new')
       .expect(200)
       .expect('Content-Type', 'text/html; charset=utf-8')
-      .expect(hasPreviousAndNextKeys)
+      .expect(hasSignUpElement)
       .end(done);
   });
 });

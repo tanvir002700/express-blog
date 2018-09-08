@@ -12,6 +12,11 @@ function hasSignUpElement(res) {
   if (!res.text.includes('Password Confirmation')) throw new Error('missing Password Confirmation');
 }
 
+function hasLoginElement(res) {
+  if (!res.text.includes('Username')) throw new Error('missing Username');
+  if (!res.text.includes('Password')) throw new Error('missing Password');
+}
+
 describe('Signup page', () => {
   it('render Signup page', (done) => {
     request(app).get('/users/new')
@@ -27,6 +32,8 @@ describe('Login page', () => {
   it('render Login page', (done) => {
     request(app).get('/users/login')
       .expect(200)
+      .expect('Content-Type', 'text/html; charset=utf-8')
+      .expect(hasLoginElement)
       .end(done);
   });
 });

@@ -1,3 +1,4 @@
+const { JSDOM } = require('jsdom');
 const request = require('supertest');
 const app = require('../../app');
 
@@ -24,6 +25,15 @@ describe('Signup page', () => {
       .expect('Content-Type', 'text/html; charset=utf-8')
       .expect(hasSignUpElement)
       .end(done);
+  });
+
+  it('register new user', (done) => {
+    request(app).get('/users/new')
+      .end(function(err, res){
+        dom = new JSDOM(res.text);
+        console.log(dom.window.document.getElementsByName('_csrf')[0].value);
+        done();
+      });
   });
 });
 

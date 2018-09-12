@@ -4,8 +4,7 @@ const config = require('../config').database;
 
 const truncateTable = (name) => {
   Client.execute("TRUNCATE "+name, [], function(err, res) {
-    console.log(err);
-    console.log(res);
+    process.exit(0)
   });
 };
 

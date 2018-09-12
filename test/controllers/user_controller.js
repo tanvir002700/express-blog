@@ -1,9 +1,10 @@
 const { JSDOM } = require('jsdom');
 const request = require('supertest');
 const app = require('../../app');
+const { flushAllTables } = require('../../helpers/test_helper');
 
 beforeEach(() => {
-  console.log('call back....');
+  setTimeout(() => flushAllTables(), 1000);
 });
 
 function hasSignUpElement(res) {
@@ -31,8 +32,19 @@ describe('Signup page', () => {
     request(app).get('/users/new')
       .end(function(err, res){
         dom = new JSDOM(res.text);
-        console.log(dom.window.document.getElementsByName('_csrf')[0].value);
-        done();
+        csrf = dom.window.document.getElementsByName('_csrf')[0].value;
+        request(app).post('/users/create')
+          .set('cookie', res.headers['set-cookie'])
+          .send({
+            _csrf: csrf,
+            email: 'test@email.com',
+            username: 'test',
+            password: 'testPass',
+            password_confirmation: 'testPass'
+          })
+          .expect(302)
+          .expect('Location', '/')
+          .end(done);
       });
   });
 });

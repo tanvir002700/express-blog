@@ -1,5 +1,5 @@
 const express = require('express');
-var passport = require('passport');
+const passport = require('passport');
 const { check, validationResult } = require('express-validator/check');
 const router = express.Router();
 const Post = require('../models/post');

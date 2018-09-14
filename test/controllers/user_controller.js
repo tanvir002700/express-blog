@@ -15,14 +15,16 @@ function hasSignUpElement(res) {
 }
 
 function hasLoginElement(res) {
-  if (!res.text.includes('Username')) throw new Error('missing Username');
-  if (!res.text.includes('Password')) throw new Error('missing Password');
+  if(!res.text.includes('Username')) throw new Error('missing Username');
+  if(!res.text.includes('Password')) throw new Error('missing Password');
 }
 
 function hasSignUpError(res) {
-  console.log(res.text);
   if(!res.text.includes('Email should not be empty.')) throw new Error('missing email presence validation.');
   if(!res.text.includes('Is not Valid Email')) throw new Error('mission email format validation.');
+  if(!res.text.includes('User should not be empty.')) throw new Error('missing username validation');
+  if(!res.text.includes('Password should not be empty.')) throw new Error('missing password validation');
+  if(!res.text.includes('password confirmation should not be empty.')) throw new Error('missing password confirmation validation');
 }
 
 describe('Rendering Signup page', () => {

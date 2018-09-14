@@ -20,6 +20,10 @@ function hasLoginElement(res) {
 }
 
 describe('Signup page', () => {
+  beforeEach(() => {
+    setTimeout(() => flushAllTables(), 1000);
+  });
+
   it('render Signup page', (done) => {
     request(app).get('/users/new')
       .expect(200)

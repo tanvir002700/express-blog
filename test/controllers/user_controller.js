@@ -27,6 +27,12 @@ function hasSignUpError(res) {
   if(!res.text.includes('password confirmation should not be empty.')) throw new Error('missing password confirmation validation');
 }
 
+function hasLoginError(res) {
+  if(!res.text.includes('Email should not be empty.')) throw new Error('missing email presence validation.');
+  if(!res.text.includes('Is not Valid Email')) throw new Error('mission email format validation.');
+  if(!res.text.includes('Password should not be empty.')) throw new Error('missing password validation');
+}
+
 describe('Rendering Signup page', () => {
   beforeEach(() => {
     setTimeout(() => flushAllTables(), 1000);
@@ -63,7 +69,7 @@ describe('Rendering Signup page', () => {
 
 
 describe('Validate User Registration', () => {
-  it('register new user', (done) => {
+  it('raise validation errors', (done) => {
     request(app).get('/users/new')
       .end(function(err, res){
         dom = new JSDOM(res.text);
@@ -87,5 +93,23 @@ describe('Login page', () => {
       .expect('Content-Type', 'text/html; charset=utf-8')
       .expect(hasLoginElement)
       .end(done);
+  });
+});
+
+describe ('Validate User Login', () => {
+  it('raise validation errors', (done) => {
+    request(app).get('/users/login')
+      .end(function(err, res){
+        dom = new JSDOM(res.text);
+        csrf = dom.window.document.getElementsByName('_csrf')[0].value;
+        request(app).post('/users/create')
+          .set('cookie', res.headers['set-cookie'])
+          .send({
+            _csrf: csrf
+          })
+          .expect(200)
+          .expect(hasLoginError)
+          .end(done);
+      });
   });
 });

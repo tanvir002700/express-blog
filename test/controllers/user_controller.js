@@ -2,6 +2,7 @@ const { JSDOM } = require('jsdom');
 const request = require('supertest');
 const app = require('../../app');
 const { flushAllTables } = require('../../helpers/test_helper');
+const User = require('../../models/user');
 
 beforeEach(() => {
   setTimeout(() => flushAllTables(), 1000);
@@ -62,7 +63,12 @@ describe('Rendering Signup page', () => {
           })
           .expect(302)
           .expect('Location', '/')
-          .end(done);
+          .end((err, res) => {
+            User.all((dberr, dbres) =>{
+              if(dbres.rowLength != 1) throw new Error('user not created');
+              done();
+            });
+          });
       });
   });
 });

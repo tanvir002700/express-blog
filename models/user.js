@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const client = require('../db/client');
 const Query = require('../db/query');
 
-module.exports.all = (params, callBack) => {
+module.exports.all = (callBack) => {
   client.execute(Query.User.ALL, [], callBack);
 };
 

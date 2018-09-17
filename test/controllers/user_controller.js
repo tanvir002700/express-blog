@@ -100,6 +100,25 @@ describe('Login page', () => {
       .expect(hasLoginElement)
       .end(done);
   });
+
+  it('logged in user', (done) => {
+    User.create({email: 'test@email.com', user: 'test', password: 'test'}, function(err, result) { process.exit(0); });
+    request(app).get('/users/login')
+      .end(function(err, res){
+        dom = new JSDOM(res.text);
+        csrf = dom.window.document.getElementsByName('_csrf')[0].value;
+        request(app).post('/users/login')
+          .set('cookie', res.headers['set-cookie'])
+          .send({
+            _csrf: csrf,
+            username: 'test',
+            password: 'testPass',
+          })
+          .expect(302)
+          .expect('Location', '/')
+          .end(done);
+      });
+  });
 });
 
 describe ('Validate User Login', () => {

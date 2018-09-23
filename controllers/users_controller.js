@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 const User = require('../models/user');
 const auth = require('../middlewares/auth');
 const { registrationValidations } = require('../validations/user');
@@ -7,11 +6,13 @@ const {
   validationCheckForRegistration,
   checkDuplicateUserByEmail,
   checkDuplicateUserByUserName,
-  checkPasswordConfirmation
+  checkPasswordConfirmation,
 } = require('../middlewares/user');
 
-router.get('/new', function(req, res, next) {
-    res.render('users/new', { csrfToken: req.csrfToken() });
+const router = express.Router();
+
+router.get('/new', (req, res) => {
+  res.render('users/new', { csrfToken: req.csrfToken() });
 });
 
 
@@ -21,27 +22,23 @@ router.post('/create',
   checkDuplicateUserByEmail,
   checkDuplicateUserByUserName,
   checkPasswordConfirmation,
-  function(req, res, next) {
-  User.create(req.body, function(err, result) {
-      res.redirect('/');
+  (req, res) => {
+    User.create(req.body, (err, result) => {
+      if (result) res.redirect('/');
+    });
   });
-});
 
-router.get('/login', function(req, res, next) {
-    res.render('users/login', { csrfToken: req.csrfToken() });
+router.get('/login', (req, res) => {
+  res.render('users/login', { csrfToken: req.csrfToken() });
 });
-
 
 router.post('/login',
-    auth.passport.authenticate('local', { successRedirect: '/', failureRedirect: '/users/login', failureFlash: true }),
-    function(req, res) {
-});
+  auth.passport.authenticate('local', { successRedirect: '/', failureRedirect: '/users/login', failureFlash: true }));
 
-router.get('/logout', function (req, res) {
-	req.logout();
-
-    req.flash('success', 'You are logged out');
-	res.redirect('/users/login');
+router.get('/logout', (req, res) => {
+  req.logout();
+  req.flash('success', 'You are logged out');
+  res.redirect('/users/login');
 });
 
 module.exports = router;

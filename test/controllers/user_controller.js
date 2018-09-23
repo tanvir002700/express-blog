@@ -114,9 +114,10 @@ describe('Login page', () => {
             username: 'test',
             password: 'testPass',
           })
-          .expect(302)
-          .expect('Location', '/')
-          .end(done);
+          .expect(function(err, res) {
+            console.log('come here');
+            console.log(res.text);
+          });
       });
   });
 });
@@ -127,7 +128,7 @@ describe ('Validate User Login', () => {
       .end(function(err, res){
         dom = new JSDOM(res.text);
         csrf = dom.window.document.getElementsByName('_csrf')[0].value;
-        request(app).post('/users/create')
+        request(app).post('/users/login')
           .set('cookie', res.headers['set-cookie'])
           .send({
             _csrf: csrf

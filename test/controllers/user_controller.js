@@ -66,8 +66,8 @@ describe('Rendering Signup page', () => {
           .end((err, res) => {
             User.all((dberr, dbres) =>{
               if(dbres.rowLength != 1) throw new Error('user not created');
-              done();
             });
+            done();
           });
       });
   });

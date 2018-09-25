@@ -1,9 +1,9 @@
 const express = require('express');
-const router = express.Router();
 const auth = require('../middlewares/auth');
-const test_helper = require('../helpers/test_helper');
 
-router.get('/', auth.isLoggedIn, function(req, res, next) {
+const router = express.Router();
+
+router.get('/', auth.isLoggedIn, (req, res) => {
   res.render('index', { title: 'Express' });
 });
 
